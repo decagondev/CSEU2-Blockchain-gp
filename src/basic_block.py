@@ -90,9 +90,18 @@ class Blockchain(object):
         in an effort to find a number that is a valid proof
         :return: A valid proof for the provided block
         """
-        # TODO
-        pass
+
+        # create a block string from the encoded dump
+        block_string = json.dumps(self.last_block, sort_keys=True).encode()
+        # set initial proof value
+        proof = 0
+        # loop over the proofs and check if valid
+        while self.valid_proof(block_string, proof) is False:
+            # increment proof
+            proof += 1
+
         # return proof
+        return proof
 
     @staticmethod
     def valid_proof(block_string, proof):
@@ -106,9 +115,12 @@ class Blockchain(object):
         correct number of leading zeroes.
         :return: True if the resulting hash is a valid proof, False otherwise
         """
-        # TODO
-        pass
+        # encode blockstring and proof to genereate a guess
+        guess = f"{block_string}{proof}".encode()
+        # hash the guess
+        guess_hash = hashlib.sha256(guess).hexdigest()
         # return True or False
+        return guess_hash[:3] == "000"
 
 
 # Instantiate our Node
@@ -124,11 +136,21 @@ blockchain = Blockchain()
 @app.route('/mine', methods=['GET'])
 def mine():
     # Run the proof of work algorithm to get the next proof
-
+    proof = blockchain.proof_of_work(blockchain.chain[-1])
     # Forge the new Block by adding it to the chain with the proof
+    # create a new transaction and reward the proof
+    # TODO: blockchain.new_transaction(sender="0", recipient=node_identifier, amount=1)
+    # previous hash
+    previous_hash = blockchain.hash(blockchain.last_block)
+    # forge new block
+    block = blockchain.new_block(proof, previous_hash)
 
     response = {
-        # TODO: Send a JSON response with the new block
+        'message': "New Block Forged",
+        'index': block['index'],
+        'transactions': block['transactions'],
+        'proof': block['proof'],
+        'previous_hash': block['previous_hash']
     }
 
     return jsonify(response), 200
