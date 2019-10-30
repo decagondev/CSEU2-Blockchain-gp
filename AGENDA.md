@@ -2,6 +2,9 @@
 
 ## Day 1 Agenda
 - Talk about Blockchain [I DO]
-- Flask Hello World [ WE DO]
+- Flask Hello World [WE DO]
 - 5 min break
-- Implement a Basic Blockchain [WE DO]
+- Implement a Blockchain Bsics [WE DO]
+- 5 min break
+- Blockchain Mining (flask) [WE DO]
+- Wrapup
