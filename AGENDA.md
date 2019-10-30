@@ -4,7 +4,7 @@
 - Talk about Blockchain [I DO]
 - Flask Hello World [WE DO]
 - 5 min break
-- Implement a Blockchain Bsics [WE DO]
+- Implement a Blockchain Basics [WE DO]
 - 5 min break
 - Blockchain Mining (flask) [WE DO]
 - Wrapup

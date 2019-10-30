@@ -2,7 +2,6 @@ import hashlib
 import json
 from time import time
 from uuid import uuid4
-
 from flask import Flask, jsonify, request
 
 
@@ -31,15 +30,22 @@ class Blockchain(object):
         """
 
         block = {
-            # TODO
+            'index': len(self.chain) + 1, # length of the chain plus 1
+            'timestamp': time(), # use the time function
+            'transactions': self.current_transactions, # ref to the current transactions of the blockchain
+            'proof': proof, # the proof provided to the function
+            'previous_hash': previous_hash or self.hash(self.chain[-1]) # the hash supplied to the function or the one derived from previous block
         }
 
         # Reset the current list of transactions
-        # Append the chain to the block
-        # Return the new block
-        pass
+        self.current_transactions = []
+        # Append the block to the chain
+        self.chain.append(block)
 
-    def hash(block):
+        # Return the new block
+        return block
+
+    def hash(self, block):
         """
         Creates a SHA-256 hash of a Block
 
@@ -54,19 +60,23 @@ class Blockchain(object):
         # It convertes the string to bytes.
         # We must make sure that the Dictionary is Ordered,
         # or we'll have inconsistent hashes
+        string_object = json.dumps(block, sort_keys=True)
 
-        # TODO: Create the block_string
+        # Create the block_string
+        block_string = string_object.encode()
+        
 
-        # TODO: Hash this string using sha256
+        # Hash this string using sha256
+        raw_hash = hashlib.sha256(block_string)
 
         # By itself, the sha256 function returns the hash in a raw string
         # that will likely include escaped characters.
         # This can be hard to read, but .hexdigest() converts the
         # hash to a string of hexadecimal characters, which is
         # easier to work with and understand
-
-        # TODO: Return the hashed block string in hexadecimal format
-        pass
+        hex_hash = raw_hash.hexdigest()
+        # Return the hashed block string in hexadecimal format
+        return hex_hash
 
     @property
     def last_block(self):
@@ -127,7 +137,9 @@ def mine():
 @app.route('/chain', methods=['GET'])
 def full_chain():
     response = {
-        # TODO: Return the chain and its current length
+        # Return the chain and its current length
+        'length': len(blockchain.chain), # length
+        'chain': blockchain.chain # chain
     }
     return jsonify(response), 200
 
