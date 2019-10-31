@@ -38,6 +38,17 @@ class Blockchain(object):
         self.chain.append(block)
         return block
 
+    def new_transaction(self, sender, recipient, amount):
+        """
+        Creates a new transaction to go into the next mined Block
+
+        :param sender: <str> Address of the Recipient
+        :param recipient: <str> Address of the Recipient
+        :param amount: <int> Amount
+        :return: <int> The index of the BLock that will hold this transaction
+        """
+        pass
+    
     @staticmethod
     def hash(block):
         """
@@ -150,3 +161,4 @@ def full_chain():
 # Run the program on port 5000
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
+
